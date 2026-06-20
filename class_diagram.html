@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPLSD-60 — Diagrama de clase</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f5f5f0;
+    color: #1a1a1a;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  header p {
+    margin-top: 0.4rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .badge {
+    display: inline-block;
+    margin-top: 0.6rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: #e8e6fe;
+    color: #3c3489;
+    border: 1px solid #afa9ec;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #dddcd6;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 960px;
+    margin: 0 auto 1.5rem;
+    overflow-x: auto;
+  }
+
+  .card h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card h2::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    border-radius: 2px;
+    background: #534ab7;
+  }
+
+  #diagram {
+    min-height: 200px;
+  }
+
+  #diagram svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #eeecea;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: #555;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .desc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .desc-card {
+    border: 1px solid #eeecea;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .desc-card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #3c3489;
+    margin-bottom: 0.4rem;
+    font-family: 'Courier New', monospace;
+  }
+
+  .desc-card p {
+    font-size: 0.8rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .desc-card .file {
+    display: inline-block;
+    margin-top: 0.4rem;
+    font-size: 0.72rem;
+    color: #854f0b;
+    background: #faeeda;
+    border: 1px solid #fac775;
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    font-family: 'Courier New', monospace;
+  }
+
+  .rel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+
+  .rel-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    background: #f5f5f0;
+    color: #444;
+    font-weight: 600;
+    border-bottom: 1px solid #dddcd6;
+  }
+
+  .rel-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #eeecea;
+    color: #333;
+    font-family: 'Courier New', monospace;
+    font-size: 0.78rem;
+  }
+
+  .rel-table tr:last-child td { border-bottom: none; }
+
+  .arrow-label {
+    background: #e1f5ee;
+    color: #0f6e56;
+    border: 1px solid #9fe1cb;
+    border-radius: 4px;
+    padding: 0.1rem 0.35rem;
+    font-size: 0.72rem;
+    font-family: 'Courier New', monospace;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>SPLSD-60 — Indexed Inverted Index cu MapReduce</h1>
+  <p>Sisteme Distribuite · Laborator 12 · TUIAȘI</p>
+  <span class="badge">Diagrama de clase</span>
+</header>
+
+<div class="card">
+  <h2>Diagrama Mermaid</h2>
+  <div id="diagram"></div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#e8e6fe;border:1px solid #afa9ec"></div>
+      Clase principale
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#e1f5ee;border:1px solid #9fe1cb"></div>
+      Structura de output
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#faeeda;border:1px solid #fac775"></div>
+      Componenta externa
+    </div>
+    <div class="legend-item" style="color:#999">
+      → dependenta · --&gt; utilizare
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Descrierea claselor</h2>
+  <div class="desc-grid">
+    <div class="desc-card">
+      <h3>Mapper</h3>
+      <p>Citeste linii din stdin, curata cuvintele (lowercase, fara punctuatie) si emite perechi <code>(cuvant, doc_id)</code> pe stdout. Obtine document_id din variabila de mediu.</p>
+      <span class="file">mapper_inverted_index.py</span>
+    </div>
+    <div class="desc-card">
+      <h3>Reducer</h3>
+      <p>Primeste perechi sortate din stdin, le grupeaza pe cheie (cuvant), deduplica doc_id-urile si emite <code>(cuvant, [doc1, doc2, ...])</code> pe stdout.</p>
+      <span class="file">reducer_inverted_index.py</span>
+    </div>
+    <div class="desc-card">
+      <h3>LocalRunner</h3>
+      <p>Simuleaza intregul pipeline MapReduce in Python pur, fara Hadoop. Apeleaza intern logica de mapare, sortare si reducere, scrind rezultatul in fisier.</p>
+      <span class="file">run_local.py</span>
+    </div>
+    <div class="desc-card">
+      <h3>InvertedIndex</h3>
+      <p>Structura de date finala: dictionar <code>word → [doc_id_1, doc_id_2, ...]</code>. Reprezinta output-ul algoritmului, scris in fisier text.</p>
+      <span class="file">output_local.txt / part-00000</span>
+    </div>
+    <div class="desc-card">
+      <h3>HadoopStreaming</h3>
+      <p>Componenta externa Apache Hadoop care orchestreaza rularea distribuita a mapper-ului si reducer-ului prin hadoop-streaming*.jar pe un cluster HDFS.</p>
+      <span class="file">hadoop-streaming*.jar</span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Relatii intre componente</h2>
+  <table class="rel-table">
+    <thead>
+      <tr><th>Sursa</th><th>Relatie</th><th>Destinatie</th><th>Descriere</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Mapper</td>
+        <td><span class="arrow-label">→ emite</span></td>
+        <td>InvertedIndex</td>
+        <td>Produce perechile intermediare (cuvant, doc_id)</td>
+      </tr>
+      <tr>
+        <td>Reducer</td>
+        <td><span class="arrow-label">→ produce</span></td>
+        <td>InvertedIndex</td>
+        <td>Agregate perechile in indexul final</td>
+      </tr>
+      <tr>
+        <td>LocalRunner</td>
+        <td><span class="arrow-label">→ apeleaza</span></td>
+        <td>Mapper</td>
+        <td>Invoca logica de mapare per document</td>
+      </tr>
+      <tr>
+        <td>LocalRunner</td>
+        <td><span class="arrow-label">→ apeleaza</span></td>
+        <td>Reducer</td>
+        <td>Invoca logica de reducere pe perechile sortate</td>
+      </tr>
+      <tr>
+        <td>LocalRunner</td>
+        <td><span class="arrow-label">→ scrie</span></td>
+        <td>InvertedIndex</td>
+        <td>Persistente rezultat in output_local.txt</td>
+      </tr>
+      <tr>
+        <td>HadoopStreaming</td>
+        <td><span class="arrow-label">→ ruleaza</span></td>
+        <td>Mapper</td>
+        <td>Lanseaza ca subprocess per input split</td>
+      </tr>
+      <tr>
+        <td>HadoopStreaming</td>
+        <td><span class="arrow-label">→ ruleaza</span></td>
+        <td>Reducer</td>
+        <td>Lanseaza dupa faza de sort/shuffle</td>
+      </tr>
+      <tr>
+        <td>HadoopStreaming</td>
+        <td><span class="arrow-label">→ scrie</span></td>
+        <td>InvertedIndex</td>
+        <td>Scrie part-00000 in HDFS</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>SPLSD-60 · Sisteme Distribuite · Laborator 12 · MapReduce Inverted Index</footer>
+
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: "'Segoe UI', system-ui, sans-serif",
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '14px',
+    fontFamily: "'Segoe UI', system-ui, sans-serif",
+    primaryColor: '#eeedfe',
+    primaryBorderColor: '#7f77dd',
+    primaryTextColor: '#26215c',
+    secondaryColor: '#e1f5ee',
+    secondaryBorderColor: '#1d9e75',
+    secondaryTextColor: '#04342c',
+    tertiaryColor: '#faeeda',
+    tertiaryBorderColor: '#ba7517',
+    tertiaryTextColor: '#412402',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+    classText: '#26215c',
+  },
+  classDiagram: {
+    useMaxWidth: true,
+  }
+});
+
+const diagram = `classDiagram
+  class Mapper {
+    -document_id : str
+    +read_stdin() list
+    +clean_word(word str) str
+    +emit(word str, doc_id str) void
+    +run() void
+  }
+
+  class Reducer {
+    -current_word : str
+    -current_doc_ids : list
+    +read_stdin() list
+    +deduplicate(doc_id str) bool
+    +emit(word str, doc_ids list) void
+    +run() void
+  }
+
+  class LocalRunner {
+    -INPUT_DIR : str
+    -OUTPUT_FILE : str
+    +load_documents() dict
+    +map_phase(doc_id str, lines list) list
+    +sort_phase(pairs list) list
+    +reduce_phase(pairs list) dict
+    +run() void
+  }
+
+  class InvertedIndex {
+    <<output>>
+    -index : dict
+    +lookup(word str) list
+    +to_file(path str) void
+  }
+
+  class HadoopStreaming {
+    <<external>>
+    +submit_job(mapper str, reducer str) void
+    +hdfs_put(local str, remote str) void
+    +hdfs_get(remote str, local str) void
+  }
+
+  Mapper --> InvertedIndex : emite perechi
+  Reducer --> InvertedIndex : produce index final
+  LocalRunner --> Mapper : apeleaza map_phase
+  LocalRunner --> Reducer : apeleaza reduce_phase
+  LocalRunner --> InvertedIndex : scrie output
+  HadoopStreaming --> Mapper : ruleaza subprocess
+  HadoopStreaming --> Reducer : ruleaza subprocess
+  HadoopStreaming --> InvertedIndex : scrie in HDFS
+`;
+
+try {
+  const { svg } = await mermaid.render('class-svg', diagram);
+  document.getElementById('diagram').innerHTML = svg;
+
+  const svgEl = document.querySelector('#diagram svg');
+  if (svgEl) {
+    svgEl.style.maxWidth = '100%';
+    svgEl.style.height = 'auto';
+  }
+} catch (err) {
+  document.getElementById('diagram').innerHTML =
+    `<p style="color:#c0392b;font-size:0.85rem">Eroare la randarea diagramei: ${err.message}</p>`;
+}
+</script>
+</body>
+</html>
